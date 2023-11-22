@@ -5,15 +5,6 @@ const mongoose = require("mongoose");
 const routerApi = require("./routes");
 const requestLogger = require("./middlewares/logger.request");
 
-// const postSchema = new mongoose.Schema({
-//   title: String,
-//   author: String,
-//   url: String,
-//   likes: Number,
-// });
-
-// const Blog = mongoose.model("Post", postSchema);
-
 const mongoUrl =
   "mongodb+srv://lobato:loto123@cluster0.5hhi0xd.mongodb.net/blog?retryWrites=true&w=majority";
 mongoose.connect(mongoUrl).then(() => console.log("Connected to database"));
