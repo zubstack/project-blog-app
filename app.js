@@ -22,6 +22,14 @@ app.use(cors());
 app.use(express.json());
 app.use(requestLogger);
 
+app.get("/", (request, response) => {
+  response.send("Welcome to blog API");
+});
+
 routerApi(app);
+
+app.get("/*", (request, response) => {
+  response.send("Not found");
+});
 
 module.exports = app;

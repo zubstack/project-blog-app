@@ -7,6 +7,6 @@ const postSchema = new mongoose.Schema({
   likes: Number,
 });
 
-const Blog = mongoose.model("Post", postSchema);
+const Post = mongoose.model("Post", postSchema);
 
-module.exports = Blog;
+module.exports = Post;
