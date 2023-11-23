@@ -17,3 +17,19 @@ postSchema.set("toJSON", {
   },
 });
 ```
+
+Cuando hacemos tests, queremos encontrar a la base de datos en un estado uniforme, sin verse alterado por las ejecuciones de los mismos anteriores tests.
+
+Asi que siempre al inicio vaciamos la database y agregamos dos entradas iniciales:
+
+```js
+beforeEach(async () => {
+  await Note.deleteMany({});
+
+  let noteObject = new Note(helper.initialNotes[0]);
+  await noteObject.save();
+
+  noteObject = new Note(helper.initialNotes[1]);
+  await noteObject.save();
+});
+```
