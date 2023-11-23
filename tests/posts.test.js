@@ -5,15 +5,15 @@ const helper = require("../utils/list_helper");
 const Post = require("../models/post");
 
 const api = request(app);
+const endpoint = "/api/posts";
 
 beforeEach(async () => {
   await Post.deleteMany({});
 
-  let postObject = new Post(helper.initialPosts[0]);
-  await postObject.save();
-
-  postObject = new Post(helper.initialPosts[1]);
-  await postObject.save();
+  helper.initialPosts.map(async (item) => {
+    let postObject = new Post(item);
+    await postObject.save();
+  });
 });
 
 describe("Trying testing", () => {
@@ -40,12 +40,16 @@ describe("Trying testing", () => {
 
 describe("/all posts", () => {
   test("receive response in json", async () => {
-    await api.get("/api/posts").expect("Content-Type", /json/).expect(200);
+    await api.get(endpoint).expect("Content-Type", /json/).expect(200);
   });
   test("check if the 'id' property exists on the response objects", async () => {
-    const response = await api.get("/api/posts");
-    const data = response.body;
+    const data = await helper.postsInDb();
     data.map((item) => expect(item.id).toBeDefined());
+  });
+  test("list of posts increases by one when /POST request", async () => {
+    await api.post(endpoint).send(helper.postsExamples.good).expect(201);
+    const postsAtEnd = await helper.postsInDb();
+    expect(postsAtEnd).toHaveLength(helper.initialPosts.length + 1);
   });
 });
 

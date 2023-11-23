@@ -24,12 +24,13 @@ Asi que siempre al inicio vaciamos la database y agregamos dos entradas iniciale
 
 ```js
 beforeEach(async () => {
-  await Note.deleteMany({});
+  await Post.deleteMany({});
 
-  let noteObject = new Note(helper.initialNotes[0]);
-  await noteObject.save();
-
-  noteObject = new Note(helper.initialNotes[1]);
-  await noteObject.save();
+  helper.initialPosts.map(async (item) => {
+    let postObject = new Post(item);
+    await postObject.save();
+  });
 });
 ```
+
+/ Nota: Algo erro sucede cuando intento agregar mas de 2 entradas, hay comportamiento inesperado.
