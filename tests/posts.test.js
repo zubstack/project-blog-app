@@ -29,7 +29,7 @@ describe("total likes", () => {
     {
       _id: "5a422bc61b54a676234d17fc",
       title: "Type wars",
-      author: "Robert C. Martin",
+      author: "Alberto Espinoza",
       url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
       likes: 2,
       __v: 0,
@@ -39,5 +39,23 @@ describe("total likes", () => {
   test("when list has only one post, equals the likes of that", () => {
     const result = listHelper.totalLikes(listWithPosts);
     expect(result).toBe(17);
+  });
+
+  describe("favorite", () => {
+    test("give the most popular blog from the bloglist", () => {
+      const result = listHelper.favoriteBlog(listWithPosts);
+      const { title, author, likes } = listWithPosts[1];
+      expect(result).toEqual({ title, author, likes });
+    });
+    test("the author with the most quantity of blogs", () => {
+      const result = listHelper.mostBlogs(listWithPosts);
+      expect(result).toEqual({ author: "Robert C. Martin", blogs: 2 });
+    });
+    test("the most liked author", () => {
+      const result = listHelper.mostLikedAuthor(listWithPosts);
+      console.log("result", result);
+      const { author, likes } = listWithPosts[1];
+      expect(result).toEqual({ author, likes });
+    });
   });
 });
