@@ -7,14 +7,6 @@ const Post = require("../models/post");
 const api = request(app);
 const endpoint = "/api/posts";
 
-beforeEach(async () => {
-  await Post.deleteMany({});
-
-  const postsObject = helper.initialPosts.map((item) => new Post(item));
-  const promiseArray = postsObject.map((post) => post.save());
-  await Promise.all(promiseArray);
-});
-
 describe("Trying testing", () => {
   test("when list has only one post, equals the likes of that", () => {
     const result = helper.totalLikes(helper.initialPosts);
@@ -37,6 +29,14 @@ describe("Trying testing", () => {
 });
 
 describe("Testing the routes belonging to the entity: posts", () => {
+  beforeEach(async () => {
+    await Post.deleteMany({});
+
+    const postsObject = helper.initialPosts.map((item) => new Post(item));
+    const promiseArray = postsObject.map((post) => post.save());
+    await Promise.all(promiseArray);
+  });
+
   test("receive response in json", async () => {
     await api.get(endpoint).expect("Content-Type", /json/).expect(200);
   });
