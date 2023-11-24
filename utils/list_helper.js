@@ -56,10 +56,9 @@ const postsExamples = {
     title: "Hello world",
     author: "Zubstack",
     url: "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
-    likes: 8,
   },
   bad: {
-    author: "Multialejo",
+    author: "Bad document",
   },
 };
 
@@ -68,19 +67,16 @@ const initialPosts = [
     title: "Go To Statement Considered Harmful",
     author: "Edsger W. Dijkstra",
     url: "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
-    likes: 5,
   },
   {
     title: "First class tests",
     author: "Robert C. Martin",
     url: "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll",
-    likes: 10,
   },
   {
     title: "El gato con botas",
     author: "Antonio Banderas",
     url: "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll",
-    likes: 8,
   },
 ];
 

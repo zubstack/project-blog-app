@@ -36,7 +36,7 @@ describe("Trying testing", () => {
   });
 });
 
-describe("/all posts", () => {
+describe("Testing the routes belonging to the entity: posts", () => {
   test("receive response in json", async () => {
     await api.get(endpoint).expect("Content-Type", /json/).expect(200);
   });
@@ -44,10 +44,17 @@ describe("/all posts", () => {
     const data = await helper.postsInDb();
     data.map((item) => expect(item.id).toBeDefined());
   });
+  test("check if the 'likes' property exists and has the value of 0", async () => {
+    const data = await helper.postsInDb();
+    data.map((item) => expect(item.likes).toEqual(0));
+  });
   test("list of posts increases by one when /POST request", async () => {
     await api.post(endpoint).send(helper.postsExamples.good).expect(201);
     const postsAtEnd = await helper.postsInDb();
     expect(postsAtEnd).toHaveLength(helper.initialPosts.length + 1);
+  });
+  test("api prevents a bad document to be added", async () => {
+    await api.post(endpoint).send(helper.postsExamples.bad).expect(400);
   });
 });
 
