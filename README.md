@@ -20,7 +20,7 @@ postSchema.set("toJSON", {
 
 Cuando hacemos tests, queremos encontrar a la base de datos en un estado uniforme, sin verse alterado por las ejecuciones de los mismos anteriores tests.
 
-Asi que siempre al inicio vaciamos la database y agregamos dos entradas iniciales:
+Asi que siempre al inicio _de cada test_ vaciamos la database y agregamos dos entradas iniciales:
 
 ```js
 beforeEach(async () => {

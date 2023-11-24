@@ -56,6 +56,12 @@ describe("Testing the routes belonging to the entity: posts", () => {
   test("api prevents a bad document to be added", async () => {
     await api.post(endpoint).send(helper.postsExamples.bad).expect(400);
   });
+  test("one document is deleted from db when /DELETE request", async () => {
+    const postsAtStart = await helper.postsInDb();
+    await api.delete(`${endpoint}/${postsAtStart[0].id}`).expect(201);
+    const postsAtEnd = await helper.postsInDb();
+    expect(postsAtEnd).toHaveLength(helper.initialPosts.length - 1);
+  });
 });
 
 afterAll(async () => {

@@ -15,4 +15,14 @@ router.post("/", async (request, response) => {
   response.status(201).json(result);
 });
 
+router.delete("/:id", async (request, response) => {
+  const { id } = request.params;
+  const result = await Post.findByIdAndDelete(id);
+  if (!result) {
+    response.status(400).json({ error: "document not found" });
+  } else {
+    response.status(201).json({ deleted: result });
+  }
+});
+
 module.exports = router;
