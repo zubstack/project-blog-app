@@ -34,3 +34,8 @@ beforeEach(async () => {
 ```
 
 / Nota: Algo erro sucede cuando intento agregar mas de 2 entradas, hay comportamiento inesperado.
+Descubri de que se trataba: Ejecutar promesas en bucle tiene un detalle y es que, el bucle puede finalizar pero no significa que las promesas se hayan terminado de ejecutar debidamente y los tests se ejecutan de todas maneras. Solucionando esto encapsulando las promesas en un array de promesas y los ejecutaremos con una sentencia especial:
+
+```js
+await Promise.all(promiseArray);
+```

@@ -76,6 +76,12 @@ const initialPosts = [
     url: "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll",
     likes: 10,
   },
+  {
+    title: "El gato con botas",
+    author: "Antonio Banderas",
+    url: "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll",
+    likes: 8,
+  },
 ];
 
 module.exports = {

@@ -10,10 +10,9 @@ const endpoint = "/api/posts";
 beforeEach(async () => {
   await Post.deleteMany({});
 
-  helper.initialPosts.map(async (item) => {
-    let postObject = new Post(item);
-    await postObject.save();
-  });
+  const postsObject = helper.initialPosts.map((item) => new Post(item));
+  const promiseArray = postsObject.map((post) => post.save());
+  await Promise.all(promiseArray);
 });
 
 describe("Trying testing", () => {
@@ -40,7 +39,11 @@ describe("Trying testing", () => {
 
 describe("/all posts", () => {
   test("receive response in json", async () => {
-    await api.get(endpoint).expect("Content-Type", /json/).expect(200);
+    const response = await api
+      .get(endpoint)
+      .expect("Content-Type", /json/)
+      .expect(200);
+    console.log("response", response.body);
   });
   test("check if the 'id' property exists on the response objects", async () => {
     const data = await helper.postsInDb();
