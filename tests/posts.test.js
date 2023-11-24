@@ -62,6 +62,18 @@ describe("Testing the routes belonging to the entity: posts", () => {
     const postsAtEnd = await helper.postsInDb();
     expect(postsAtEnd).toHaveLength(helper.initialPosts.length - 1);
   });
+  test("one document is modified from db when /PUT request", async () => {
+    const [postToUpdate] = await helper.postsInDb(); // Have the first item
+    await api
+      .put(`${endpoint}/${postToUpdate.id}`)
+      .send({
+        likes: 9,
+      })
+      .expect(201);
+    const postsAtEnd = await helper.postsInDb();
+    const updatedPost = postsAtEnd.find((item) => postToUpdate.id === item.id);
+    expect(updatedPost.likes).toEqual(9);
+  });
 });
 
 afterAll(async () => {

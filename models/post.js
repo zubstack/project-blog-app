@@ -16,8 +16,9 @@ const postSchema = new mongoose.Schema({
   },
   likes: {
     type: Number,
-    min: [0, "Minimun of likes: 0"],
-    max: [100, "Maximun of likes: 100"],
+    default: 0,
+    max: [100, "The value of likes cannot exceed 100."],
+    min: [0, "The value of likes cannot be less than 0."],
   },
 });
 
@@ -25,7 +26,6 @@ const Post = mongoose.model("Post", postSchema);
 
 postSchema.set("toJSON", {
   transform: (document, returnedObject) => {
-    returnedObject.likes = 0;
     returnedObject.id = returnedObject._id.toString();
     delete returnedObject._id;
     delete returnedObject.__v;
