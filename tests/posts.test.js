@@ -31,7 +31,6 @@ describe("Trying testing", () => {
   });
   test("the most liked author", () => {
     const result = helper.mostLikedAuthor(helper.initialPosts);
-    console.log("result", result);
     const { author, likes } = helper.initialPosts[1];
     expect(result).toEqual({ author, likes });
   });
@@ -39,11 +38,7 @@ describe("Trying testing", () => {
 
 describe("/all posts", () => {
   test("receive response in json", async () => {
-    const response = await api
-      .get(endpoint)
-      .expect("Content-Type", /json/)
-      .expect(200);
-    console.log("response", response.body);
+    await api.get(endpoint).expect("Content-Type", /json/).expect(200);
   });
   test("check if the 'id' property exists on the response objects", async () => {
     const data = await helper.postsInDb();

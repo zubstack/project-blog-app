@@ -1,10 +1,25 @@
 const mongoose = require("mongoose");
 
 const postSchema = new mongoose.Schema({
-  title: String,
-  author: String,
-  url: String,
-  likes: Number,
+  title: {
+    type: String,
+    required: [true, "Please set title"],
+    unique: [true, "This title already exists"],
+  },
+  author: {
+    type: String,
+    required: [true, "Please set author"],
+  },
+  url: {
+    type: String,
+    required: [true, "Please set url"],
+  },
+  likes: {
+    type: Number,
+    required: [true, "Please set title"],
+    min: [0, "Minimun of likes: 0"],
+    max: [100, "Maximun of likes: 100"],
+  },
 });
 
 const Post = mongoose.model("Post", postSchema);
