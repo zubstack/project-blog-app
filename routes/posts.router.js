@@ -5,7 +5,11 @@ const User = require("../models/user");
 const router = express.Router();
 
 router.get("/", async (request, response) => {
-  const posts = await Post.find({});
+  const posts = await Post.find({}).populate("user", {
+    username: 1,
+    name: 1,
+    id: 1,
+  });
   response.json(posts);
 });
 
