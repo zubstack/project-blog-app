@@ -1,5 +1,6 @@
 const express = require("express");
 const Post = require("../models/post");
+const User = require("../models/user");
 
 const router = express.Router();
 
@@ -9,9 +10,16 @@ router.get("/", async (request, response) => {
 });
 
 router.post("/", async (request, response) => {
-  const { body } = request;
-  const post = new Post(body);
-  const result = await post.save();
+  const { title, author, url, userId } = request.body;
+  const user = await User.findById(userId);
+  if (!user) {
+    return response.status(404).json({ error: "user not found" });
+  }
+  const newPost = new Post({ title, author, url, user: user.id });
+  const result = await newPost.save();
+
+  user.posts = user.posts.concat(newPost._id);
+  await user.save();
   response.status(201).json(result);
 });
 

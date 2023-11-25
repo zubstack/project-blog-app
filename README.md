@@ -46,6 +46,6 @@ await Promise.all(promiseArray);
 Las DB no relacionales no tienen la misma facilidad para anexar tablas relacionadas como la tienen la DB relacionales (que si tienen JOIN).
 Hay muchas formas de establecer relaciones entre collecciones, la que usaremos en esta relacion _uno a muchos_ sera establecer una referencia en cada bando:
 
-- Cada objeto usuario porta un array con los id de los posts que "escribio" y cada post guarda un unico valor (el id) que corresponde a su creador.
+- Cada objeto usuario porta un array con los id de los posts que "guardo" y cada post guarda un unico valor (el id) que corresponde a su "creador".
 
 Para lograr eso modificamos ambos _schemas_
