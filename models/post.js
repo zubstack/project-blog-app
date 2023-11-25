@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const uniqueValidator = require("mongoose-unique-validator");
 
 const postSchema = new mongoose.Schema({
   title: {
@@ -20,7 +21,13 @@ const postSchema = new mongoose.Schema({
     max: [100, "The value of likes cannot exceed 100."],
     min: [0, "The value of likes cannot be less than 0."],
   },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
 });
+
+postSchema.plugin(uniqueValidator);
 
 const Post = mongoose.model("Post", postSchema);
 
