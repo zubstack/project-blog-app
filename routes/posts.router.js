@@ -1,8 +1,17 @@
 const express = require("express");
+const jwt = require("jsonwebtoken");
 const Post = require("../models/post");
 const User = require("../models/user");
 
 const router = express.Router();
+
+function getTokenFrom(request) {
+  const authorization = request.get("authorization");
+  if (authorization && authorization.startsWith("Bearer")) {
+    return authorization.replace("Bearer ", "");
+  }
+  return null;
+}
 
 router.get("/", async (request, response) => {
   const posts = await Post.find({}).populate("user", {
@@ -14,17 +23,21 @@ router.get("/", async (request, response) => {
 });
 
 router.post("/", async (request, response) => {
-  const { title, author, url, userId } = request.body;
-  const user = await User.findById(userId);
-  if (!user) {
-    return response.status(404).json({ error: "user not found" });
+  const { title, author, url } = request.body;
+  const decodedToken = jwt.verify(getTokenFrom(request), "my_secret");
+  const { id } = decodedToken;
+  if (!id) {
+    return response.status(401).json({ error: "invalid token" });
   }
-  const newPost = new Post({ title, author, url, user: user.id });
-  const result = await newPost.save();
+  const user = await User.findById(id);
+  const newPost = new Post({ title, author, url, user: id });
+  const savedPost = await newPost.save();
 
   user.posts = user.posts.concat(newPost._id);
   await user.save();
-  response.status(201).json(result);
+
+  console.log("token", decodedToken);
+  response.json(savedPost);
 });
 
 router.delete("/:id", async (request, response) => {

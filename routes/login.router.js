@@ -19,7 +19,7 @@ router.get("/", async (request, response) => {
   }
 
   const userForToken = {
-    username: user.name,
+    username: user.username,
     id: user.id,
   };
 
