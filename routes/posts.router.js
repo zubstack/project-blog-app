@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const Post = require("../models/post");
@@ -22,7 +23,7 @@ router.post("/", async (request, response) => {
   if (!request.token) {
     return response.status(401).json({ error: "invalid token" });
   }
-  const decodedToken = jwt.verify(request.token, "my_secret");
+  const decodedToken = jwt.verify(request.token, process.env.SECRET);
   const { id } = decodedToken;
   const user = await User.findById(id);
   const newPost = new Post({ title, author, url, user: id });
@@ -36,13 +37,28 @@ router.post("/", async (request, response) => {
 });
 
 router.delete("/:id", async (request, response) => {
-  const { id } = request.params;
-  const result = await Post.findByIdAndDelete(id);
-  if (!result) {
-    response.status(404).json({ error: "document not found" });
-  } else {
-    response.status(201).json({ deleted: result });
+  const { id: postId } = request.params;
+  if (!postId) {
+    return response.status(400).json({ error: "missing id" });
   }
+  if (!request.token) {
+    return response.status(401).json({ error: "invalid token" });
+  }
+  const decodedToken = jwt.verify(request.token, process.env.SECRET);
+  const { id: userId } = decodedToken;
+  const user = await User.findById(userId);
+  const postToDelete = await Post.findById(postId);
+  if (!postToDelete) {
+    return response.status(404).json({ error: "document not found" });
+  }
+  console.log("postsoDelete", postToDelete);
+  if (user.id !== postToDelete.user.toString()) {
+    return response
+      .status(401)
+      .json({ error: "creator is the only allowed to delete its posts" });
+  }
+  const result = await Post.findByIdAndDelete(postId);
+  response.status(201).json({ deleted: result });
 });
 
 router.put("/:id", async (request, response) => {
