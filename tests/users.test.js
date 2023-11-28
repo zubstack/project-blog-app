@@ -1,6 +1,7 @@
 const request = require("supertest");
-const app = require("../app");
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+const app = require("../app");
 
 const helper = require("../utils/user_helper");
 const User = require("../models/user");
@@ -10,6 +11,9 @@ const endpoint = "/api/users";
 
 beforeEach(async () => {
   await User.deleteMany({});
+  helper.initialUsers.map(
+    async (user) => (user.password = await bcrypt.hash(user.password, 10))
+  );
   const usersObject = helper.initialUsers.map((item) => new User(item));
   const promiseArray = usersObject.map((users) => users.save());
   await Promise.all(promiseArray);
