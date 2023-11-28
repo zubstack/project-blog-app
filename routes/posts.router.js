@@ -5,14 +5,6 @@ const User = require("../models/user");
 
 const router = express.Router();
 
-function getTokenFrom(request) {
-  const authorization = request.get("authorization");
-  if (authorization && authorization.startsWith("Bearer")) {
-    return authorization.replace("Bearer ", "");
-  }
-  return null;
-}
-
 router.get("/", async (request, response) => {
   const posts = await Post.find({}).populate("user", {
     username: 1,
@@ -27,11 +19,11 @@ router.post("/", async (request, response) => {
   if (!(title && author && url)) {
     return response.status(400).json({ error: "missing data" });
   }
-  const decodedToken = jwt.verify(getTokenFrom(request), "my_secret");
-  const { id } = decodedToken;
-  if (!id) {
+  if (!request.token) {
     return response.status(401).json({ error: "invalid token" });
   }
+  const decodedToken = jwt.verify(request.token, "my_secret");
+  const { id } = decodedToken;
   const user = await User.findById(id);
   const newPost = new Post({ title, author, url, user: id });
   const savedPost = await newPost.save();
