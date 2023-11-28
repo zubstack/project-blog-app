@@ -13,7 +13,7 @@ function tokenExtractor(request, response, next) {
 function requestLogger(request, response, next) {
   logger.info("Method:", request.method);
   logger.info("Path:  ", request.path);
-  logger.info("Body:  ", request.body);
+  logger.info("Body:  ", filterSensitiveData(request));
   logger.info("---");
   next();
 }
@@ -34,6 +34,18 @@ const errorHandler = (error, request, response, next) => {
   }
 
   next(error);
+};
+
+// Helpers
+
+const filterSensitiveData = (request) => {
+  if (request.body && request.body.password) {
+    const bodyCopy = { ...request.body };
+    bodyCopy.password = "********";
+    return bodyCopy;
+  } else {
+    return request.body;
+  }
 };
 
 module.exports = {
