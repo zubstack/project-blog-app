@@ -16,6 +16,9 @@ router.get("/", async (request, response) => {
 
 router.post("/", async (request, response) => {
   const { name, username, password } = request.body;
+  if (!(name && username && password)) {
+    return response.status(400).json({ error: "missing data" });
+  }
   if (username.length < 3 || password.length < 3) {
     return response.status(401).json({
       error: "Both username and password must to have a least 3 characters",
