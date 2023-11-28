@@ -24,6 +24,9 @@ router.get("/", async (request, response) => {
 
 router.post("/", async (request, response) => {
   const { title, author, url } = request.body;
+  if (!(title && author && url)) {
+    return response.status(400).json({ error: "missing data" });
+  }
   const decodedToken = jwt.verify(getTokenFrom(request), "my_secret");
   const { id } = decodedToken;
   if (!id) {
