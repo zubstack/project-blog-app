@@ -56,7 +56,7 @@ describe("Testing the routes belonging to the entity: posts", () => {
 
   async function getTokenFromUser() {
     const { username, password } = usersHelper.initialUsers[1];
-    const result = await api.get("/api/login").send({ username, password });
+    const result = await api.post("/api/login").send({ username, password });
     return result.body.token;
   }
 
