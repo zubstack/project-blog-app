@@ -1,6 +1,5 @@
 const request = require("supertest");
 const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
 const app = require("../app");
 
 const helper = require("../utils/user_helper");
@@ -11,18 +10,15 @@ const endpoint = "/api/users";
 
 beforeEach(async () => {
   await User.deleteMany({});
-  helper.initialUsers.map(
-    async (user) => (user.password = await bcrypt.hash(user.password, 10))
-  );
   const usersObject = helper.initialUsers.map((item) => new User(item));
   const promiseArray = usersObject.map((users) => users.save());
   await Promise.all(promiseArray);
 });
 
 describe("Testing the routes belonging to the entity: users", () => {
-  // test("receive response in json", async () => {
-  //   await api.get(endpoint).expect("Content-Type", /json/).expect(200);
-  // });
+  test("receive response in json", async () => {
+    await api.get(endpoint).expect("Content-Type", /json/).expect(200);
+  });
 
   test("check if the 'posts' property exists", async () => {
     const data = await helper.usersInDb();

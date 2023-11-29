@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const request = require("supertest");
-const bcrypt = require("bcrypt");
 const app = require("../app");
 
 const postsHelper = require("../utils/list_helper");
@@ -34,11 +33,6 @@ describe("Trying testing", () => {
 });
 
 describe("Testing the routes belonging to the entity: posts", () => {
-  usersHelper.initialUsers.map(async (user) => {
-    const saltRounds = 10;
-    user.passwordHash = await bcrypt.hash(user.password, saltRounds);
-  });
-
   beforeEach(async () => {
     //The number of initial users MUST TO BE EQUAL to initial posts
 

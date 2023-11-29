@@ -1,3 +1,5 @@
+const bcrypt = require("bcrypt");
+
 const User = require("../models/user");
 
 const initialUsers = [
@@ -32,6 +34,11 @@ const usersExamples = {
     username: "e_bad",
   },
 };
+
+initialUsers.map(async (user) => {
+  const saltRounds = 10;
+  user.passwordHash = await bcrypt.hash(user.password, saltRounds);
+});
 
 async function usersInDb() {
   const users = await User.find({});
