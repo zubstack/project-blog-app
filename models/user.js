@@ -11,7 +11,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please set name"],
   },
-  passwordHash: String,
+  passwordHash: {
+    type: String,
+    required: [true, "passwordHash is missing"],
+  },
   posts: [
     {
       type: mongoose.Schema.Types.ObjectId,

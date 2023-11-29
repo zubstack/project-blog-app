@@ -26,9 +26,11 @@ router.get("/", async (request, response) => {
   // eslint-disable-next-line no-undef
   const token = jwt.sign(userForToken, process.env.SECRET);
 
-  response
-    .status(200)
-    .json({ username: user.username, name: user.name, token });
+  response.status(200).json({
+    username: user.username,
+    name: user.name,
+    token,
+  });
 });
 
 module.exports = router;

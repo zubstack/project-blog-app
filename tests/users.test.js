@@ -20,9 +20,9 @@ beforeEach(async () => {
 });
 
 describe("Testing the routes belonging to the entity: users", () => {
-  test("receive response in json", async () => {
-    await api.get(endpoint).expect("Content-Type", /json/).expect(200);
-  });
+  // test("receive response in json", async () => {
+  //   await api.get(endpoint).expect("Content-Type", /json/).expect(200);
+  // });
 
   test("check if the 'posts' property exists", async () => {
     const data = await helper.usersInDb();

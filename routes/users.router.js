@@ -20,7 +20,7 @@ router.post("/", async (request, response) => {
     return response.status(400).json({ error: "missing data" });
   }
   if (username.length < 3 || password.length < 3) {
-    return response.status(401).json({
+    return response.status(400).json({
       error: "Both username and password must to have a least 3 characters",
     });
   }

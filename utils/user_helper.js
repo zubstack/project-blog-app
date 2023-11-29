@@ -5,16 +5,19 @@ const initialUsers = [
     name: "Fabiolo Lopez",
     username: "mantras",
     password: "all12",
+    passwordHash: "",
   },
   {
     name: "Alejandro Carmesi",
     username: "zubstack",
     password: "admin123",
+    passwordHash: "",
   },
   {
     name: "Marco Mena",
     username: "mamen",
     password: "lozo123",
+    passwordHash: "",
   },
 ];
 
