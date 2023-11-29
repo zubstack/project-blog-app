@@ -1,4 +1,14 @@
+/* eslint-disable no-undef */
+const jwt = require("jsonwebtoken");
 const logger = require("../utils/logger.js");
+
+function userExtractor(request, response, next) {
+  if (!request.token) {
+    return response.status(401).json({ error: "invalid token or unexisting" });
+  }
+  request.user = jwt.verify(request.token, process.env.SECRET);
+  next();
+}
 
 function tokenExtractor(request, response, next) {
   const authorization = request.get("authorization");
@@ -53,4 +63,5 @@ module.exports = {
   unknownEndpoint,
   errorHandler,
   tokenExtractor,
+  userExtractor,
 };
