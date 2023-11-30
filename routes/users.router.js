@@ -17,7 +17,7 @@ router.get("/", async (request, response) => {
 router.post("/", async (request, response) => {
   const { name, username, password } = request.body;
   if (!(name && username && password)) {
-    return response.status(400).json({ error: "missing data" });
+    return response.status(400).json({ message: "missing data" });
   }
   if (username.length < 3 || password.length < 3) {
     return response.status(400).json({
@@ -35,7 +35,7 @@ router.post("/", async (request, response) => {
 //   const { id } = request.params;
 //   const result = await User.findByIdAndDelete(id);
 //   if (!result) {
-//     response.status(404).json({ error: "document not found" });
+//     response.status(404).json({ message: "document not found" });
 //   } else {
 //     response.status(201).json({ deleted: result });
 //   }
@@ -50,7 +50,7 @@ router.post("/", async (request, response) => {
 //     runValidators: true,
 //   });
 //   if (!updatedUser) {
-//     response.status(404).json({ error: "document not found" });
+//     response.status(404).json({ message: "document not found" });
 //   } else {
 //     response.status(201).json({ updated: updatedUser });
 //   }

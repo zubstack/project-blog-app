@@ -4,7 +4,9 @@ const logger = require("../utils/logger.js");
 
 function userExtractor(request, response, next) {
   if (!request.token) {
-    return response.status(401).json({ error: "invalid token or unexisting" });
+    return response
+      .status(401)
+      .json({ message: "invalid token or unexisting" });
   }
   request.user = jwt.verify(request.token, process.env.SECRET);
   next();
@@ -38,9 +40,9 @@ const errorHandler = (error, request, response, next) => {
   if (error.name === "CastError") {
     return response.status(400).send({ error: "malformatted id" });
   } else if (error.name === "ValidationError") {
-    return response.status(400).json({ error: error.message });
+    return response.status(400).json({ message: error.message });
   } else if (error.name === "JsonWebTokenError") {
-    return response.status(401).json({ error: error.message });
+    return response.status(401).json({ message: error.message });
   }
 
   next(error);

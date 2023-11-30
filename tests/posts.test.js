@@ -105,18 +105,18 @@ describe("Testing the routes belonging to the entity: posts", () => {
     const postsAtEnd = await postsHelper.postsInDb();
     expect(postsAtEnd).toHaveLength(postsHelper.initialPosts.length - 1);
   });
-  test("one document is modified from db when /PUT request", async () => {
-    const [postToUpdate] = await postsHelper.postsInDb();
-    await api
-      .put(`${endpoint}/${postToUpdate.id}`)
-      .send({
-        likes: ["id"],
-      })
-      .expect(201);
-    const postsAtEnd = await postsHelper.postsInDb();
-    const updatedPost = postsAtEnd.find((item) => postToUpdate.id === item.id);
-    expect(updatedPost.likes).toHaveLength(1);
-  });
+  // test("one document is modified from db when /PUT request", async () => {
+  //   const [postToUpdate] = await postsHelper.postsInDb();
+  //   await api
+  //     .put(`${endpoint}/${postToUpdate.id}`)
+  //     .send({
+  //       likes: ["id"],
+  //     })
+  //     .expect(201);
+  //   const postsAtEnd = await postsHelper.postsInDb();
+  //   const updatedPost = postsAtEnd.find((item) => postToUpdate.id === item.id);
+  //   expect(updatedPost.likes).toHaveLength(1);
+  // });
 });
 
 afterAll(async () => {

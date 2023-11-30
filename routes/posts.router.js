@@ -18,7 +18,7 @@ router.post("/", middlewares.userExtractor, async (request, response) => {
   const { title, author, url } = request.body;
 
   if (!(title && author && url)) {
-    return response.status(400).json({ error: "missing data" });
+    return response.status(400).json({ message: "missing data" });
   }
 
   const { id } = request.user;
@@ -35,25 +35,26 @@ router.post("/", middlewares.userExtractor, async (request, response) => {
 router.delete("/:id", middlewares.userExtractor, async (request, response) => {
   const { id: postId } = request.params;
   if (!postId) {
-    return response.status(400).json({ error: "missing id" });
+    return response.status(400).json({ message: "missing id" });
   }
 
   const { id: userId } = request.user;
   const user = await User.findById(userId);
   const postToDelete = await Post.findById(postId);
   if (!postToDelete) {
-    return response.status(404).json({ error: "document not found" });
+    return response.status(404).json({ message: "document not found" });
   }
   if (user.id !== postToDelete.user.toString()) {
     return response
       .status(401)
-      .json({ error: "creator is the only allowed to delete their posts" });
+      .json({ message: "creator is the only allowed to delete their posts" });
   }
   const result = await Post.findByIdAndDelete(postId);
   response.status(201).json({ deleted: result });
 });
 
-router.put("/:id", async (request, response) => {
+// Pending
+router.put("/edit/:id", async (request, response) => {
   const { body } = request;
   const { id } = request.params;
 
@@ -62,17 +63,48 @@ router.put("/:id", async (request, response) => {
     runValidators: true,
   });
   if (!updatedPost) {
-    response.status(404).json({ error: "document not found" });
+    response.status(404).json({ message: "document not found" });
   } else {
     response.status(201).json({ updated: updatedPost });
   }
 });
 
-// router.put("/:id", async (request, response) => {
-//   // Request must to cointain: userId, postId
-//   //Un usuario da like a un post y este guarda su id en el array likes
-//   //Se debe hacer una actualizacion para agregar un nuevo elemento al array cada vez que un user de like
-//   //Un usuario solo puede representar un like en el post
-// });
+router.patch("/:id", middlewares.userExtractor, async (request, response) => {
+  const { id: postId } = request.params;
+  if (!postId) {
+    return response.status(400).json({ message: "missing id" });
+  }
+  const postToUpdate = await Post.findById(postId);
+  if (!postToUpdate) {
+    return response.status(404).json({ message: "document not found" });
+  }
+  const { id: userId } = request.user;
+  const user = await User.findById(userId);
+
+  const userHasLiked = !postToUpdate.likes.every(
+    (item) => item != user.username
+  );
+  console.log("userHasLiked", userHasLiked);
+  if (!userHasLiked) {
+    postToUpdate.likes = postToUpdate.likes.concat(user.username);
+  } else {
+    const index = postToUpdate.likes.findIndex(
+      (item) => item === user.username
+    );
+    postToUpdate.likes.splice(index, 1);
+    console.log("Repeated");
+  }
+  console.log("postToUpdate", postToUpdate);
+
+  const updatedPost = await Post.findByIdAndUpdate(
+    postId,
+    { likes: postToUpdate.likes },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+  response.json({ updated: updatedPost });
+});
 
 module.exports = router;
