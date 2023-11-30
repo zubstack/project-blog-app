@@ -23,6 +23,9 @@ router.post("/", middlewares.userExtractor, async (request, response) => {
 
   const { id } = request.user;
   const user = await User.findById(id);
+  if (!user) {
+    return response.status(404).json({ message: "user creator nor found" });
+  }
   const newPost = new Post({ title, author, url, user: id });
   const savedPost = await newPost.save();
 
