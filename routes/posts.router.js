@@ -68,4 +68,11 @@ router.put("/:id", async (request, response) => {
   }
 });
 
+// router.put("/:id", async (request, response) => {
+//   // Request must to cointain: userId, postId
+//   //Un usuario da like a un post y este guarda su id en el array likes
+//   //Se debe hacer una actualizacion para agregar un nuevo elemento al array cada vez que un user de like
+//   //Un usuario solo puede representar un like en el post
+// });
+
 module.exports = router;

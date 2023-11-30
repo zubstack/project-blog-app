@@ -16,9 +16,8 @@ const postSchema = new mongoose.Schema({
     required: [true, "Please set url"],
   },
   likes: {
-    type: Number,
-    default: 0,
-    max: [100, "The value of likes cannot exceed 100."],
+    type: Array,
+    default: [],
     min: [0, "The value of likes cannot be less than 0."],
   },
   user: {

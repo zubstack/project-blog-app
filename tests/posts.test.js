@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const request = require("supertest");
 const app = require("../app");
 
-const postsHelper = require("../utils/list_helper");
+const postsHelper = require("../utils/post_helper");
 const usersHelper = require("../utils/user_helper");
 
 const Post = require("../models/post");
@@ -69,7 +69,7 @@ describe("Testing the routes belonging to the entity: posts", () => {
   });
   test("check if the 'likes' property exists and has the value of 0", async () => {
     const data = await postsHelper.postsInDb();
-    data.map((item) => expect(item.likes).toEqual(0));
+    data.map((item) => expect(item.likes).toHaveLength(0));
   });
   test("fails when no token authenticator is sent", async () => {
     await api.post(endpoint).send(postsHelper.postsExamples.good).expect(401);
@@ -110,12 +110,12 @@ describe("Testing the routes belonging to the entity: posts", () => {
     await api
       .put(`${endpoint}/${postToUpdate.id}`)
       .send({
-        likes: 9,
+        likes: ["id"],
       })
       .expect(201);
     const postsAtEnd = await postsHelper.postsInDb();
     const updatedPost = postsAtEnd.find((item) => postToUpdate.id === item.id);
-    expect(updatedPost.likes).toEqual(9);
+    expect(updatedPost.likes).toHaveLength(1);
   });
 });
 
