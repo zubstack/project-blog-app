@@ -14,6 +14,24 @@ router.get("/", async (request, response) => {
   response.json(posts);
 });
 
+router.get(
+  "/user-posts",
+  middlewares.userExtractor,
+  async (request, response) => {
+    const { id } = request.user;
+    const user = await User.findById(id).populate("posts", {
+      title: 1,
+      author: 1,
+      likes: 1,
+      id: 1,
+    });
+    if (!user) {
+      return response.status(404).json({ message: "user creator nor found" });
+    }
+    response.status(200).json(user);
+  }
+);
+
 router.post("/", middlewares.userExtractor, async (request, response) => {
   const { title, author, url } = request.body;
 
